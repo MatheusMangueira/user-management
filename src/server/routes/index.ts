@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { CompaniesController } from '../controllers';
+
 
 export class AllRouter {
   private router: Router;
@@ -9,9 +11,14 @@ export class AllRouter {
   }
 
 
+  private companies() {
+    this.router.get('/companies', CompaniesController.getAll);
+    this.router.post('/companies', CompaniesController.create);
+  }
+
 
   private setupRoutes() {
-
+    this.companies();
   }
 
 
