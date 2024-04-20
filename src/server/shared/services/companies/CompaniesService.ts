@@ -1,6 +1,6 @@
 import { CompaniesDTO } from '../../../DTOs/companies/CompaniesDTO';
 import { CompaniesModel } from '../../../model/companies/CompaniesModel';
-import { ICompaniesRepository } from '../../repository/companies/types/IComponiesRepository';
+import { ICompaniesRepository } from '../../repository/types/IComponiesRepository';
 
 
 export class CompaniesService {
@@ -11,6 +11,12 @@ export class CompaniesService {
 
 
     try {
+      const emailCompany = await this.companiesRepository.findByEmail(companiesDto.email);
+
+      if (emailCompany?.email === companiesDto.email) {
+        throw new Error('email in Company already exists');
+      }
+
       const newCompany = new CompaniesModel(
         companiesDto.name,
         companiesDto.email,

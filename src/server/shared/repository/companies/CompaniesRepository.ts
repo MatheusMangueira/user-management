@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 import { CompaniesModel } from '../../../model/companies/CompaniesModel';
-import { ICompaniesRepository } from './types/IComponiesRepository';
+import { ICompaniesRepository } from '../types/IComponiesRepository';
 
 
 export class CompaniesRepository implements ICompaniesRepository {
@@ -23,6 +23,33 @@ export class CompaniesRepository implements ICompaniesRepository {
 
     return rows;
 
+  }
+
+  async findById(id: string): Promise<CompaniesModel | null> {
+    const query = 'SELECT * FROM companies WHERE id = $1';
+    const values = [id];
+
+    const { rows } = await this.db.query(query, values);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    return rows[0];
+
+  }
+
+  async findByEmail(email: string): Promise<CompaniesModel | null> {
+    const query = 'SELECT * FROM companies WHERE email = $1';
+    const values = [email];
+
+    const { rows } = await this.db.query(query, values);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    return rows[0];
   }
 
 }
