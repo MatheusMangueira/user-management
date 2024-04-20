@@ -2,10 +2,10 @@ import { UserDTO } from '../../../DTOs/user/UserDTO';
 import { UserModel } from '../../../model';
 
 export interface IUserRepository {
-  create(user: UserDTO): Promise<UserDTO>;
-  getAll(): Promise<UserDTO[]>;
-  findById(id: string): Promise<UserDTO | null>;
-  findByEmail(email: string): Promise<UserDTO | null>;
+  create(user: UserModel): Promise<UserModel>;
+  getAll(): Promise<UserModel[]>;
+  findById(id: string): Promise<UserModel | null>;
+  findByEmail(email: string): Promise<UserModel | null>;
   // update(user: any): Promise<any | null>;
   // delete(id: string): Promise<boolean>;
 }

@@ -18,8 +18,7 @@ export class RolesService {
       const newRole = new RolesModel(
         role.name,
         role.description,
-        new Date(),
-        []
+        new Date()
       );
 
       const createdRole = await this.rolesRepository.create(newRole);

@@ -1,3 +1,4 @@
+import { RolesDTO } from '../roles/RolesDTO';
 
 
 export class UserDTO {
@@ -6,5 +7,6 @@ export class UserDTO {
   email: string;
   password: string;
   company_id: string;
+  roles: RolesDTO[];
   createdAt: Date;
 }

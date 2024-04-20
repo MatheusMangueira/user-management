@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import { IRolesRepository } from '../types/IRolesRepository';
 import { RolesModel } from '../../../model/roles/RolesModel';
+import { RolesDTO } from '../../../DTOs/roles/RolesDTO';
 
 
 export class RolesRepository implements IRolesRepository {
@@ -36,7 +37,7 @@ export class RolesRepository implements IRolesRepository {
     return rows[0];
   }
 
-  async findByIds(ids: string[]): Promise<RolesModel[]> {
+  async findByIds(ids: RolesDTO[]): Promise<RolesModel[]> {
     const query = 'SELECT * FROM roles WHERE id = ANY($1)';
     const values = [ids];
 
@@ -56,28 +57,6 @@ export class RolesRepository implements IRolesRepository {
     }
 
     return rows[0];
-  }
-
-  async addPermissionsToRole(roleId: string, permissionIds: string[]): Promise<void> {
-    const client = await this.db.connect();
-    try {
-      await client.query('BEGIN'); 
-      const query = `
-        INSERT INTO role_permissions (role_id, permission_id)
-        VALUES ($1, $2) ON CONFLICT DO NOTHING;
-      `;
-
-      for (const permissionId of permissionIds) {
-        await client.query(query, [roleId, permissionId]);
-      }
-
-      await client.query('COMMIT');
-    } catch (err) {
-      await client.query('ROLLBACK');
-      throw err;
-    } finally {
-      client.release();
-    }
   }
 
 

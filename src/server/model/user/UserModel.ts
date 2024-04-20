@@ -1,8 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { PermissionsDTO } from '../../DTOs/permissions/PermissionsDTO';
 import { RolesDTO } from '../../DTOs/roles/RolesDTO';
-import { PermissionsModel } from '../permissions/PermissionsModel';
-import { RolesModel } from '../roles/RolesModel';
 
 
 export class UserModel {
@@ -11,24 +8,21 @@ export class UserModel {
   email: string;
   password: string;
   company_id: string;
-  permissions: PermissionsModel[];
-  roles: RolesModel[];
-  createdAt: Date;
+  roles: RolesDTO[];
+  created_at: Date;
 
   constructor(
     name: string,
     email: string,
     password: string,
     company_id: string,
-    permissions: PermissionsModel[],
-    roles: RolesModel[],
-    createdAt: Date) {
+    roles: RolesDTO[],
+    created_at: Date) {
     this.name = name;
     this.email = email;
     this.password = password;
     this.company_id = company_id;
-    this.createdAt = createdAt;
-    this.permissions = permissions;
+    this.created_at = created_at;
     this.roles = roles;
 
     if (!this.id) {

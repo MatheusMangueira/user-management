@@ -36,8 +36,7 @@ export class UserService {
         userDto.email,
         passwordHash,
         company.id,
-        [],
-        [],
+        userDto.roles,
         new Date()
       );
 
