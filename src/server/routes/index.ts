@@ -23,7 +23,7 @@ export class AllRouter {
 
   private users() {
     this.router.get('/users', authenticated(), PermissionsMiddleware.is(['rh', 'security']), UserController.getAll);
-    this.router.post('/users', authenticated(), PermissionsMiddleware.is(['rh']), UserController.create);
+    this.router.post('/users', authenticated(), PermissionsMiddleware.is(['company']), UserController.create);
   }
 
   private session() {
@@ -31,7 +31,7 @@ export class AllRouter {
   }
 
   private roles() {
-    this.router.post('/roles', authenticated(), PermissionsMiddleware.is(['adm']), RolesController.create);
+    this.router.post('/roles', authenticated(), PermissionsMiddleware.is(['adm', 'company']), RolesController.create);
     this.router.get('/roles', authenticated(), PermissionsMiddleware.is(['rh', 'security']), RolesController.getAll);
   }
 

@@ -25,5 +25,6 @@ export const rolesServiceInstance = new RolesService(
 
 
 export const SessionServiceInstance = new SessionService(
-  new UserRepository(pool)
+  new UserRepository(pool),
+  new CompaniesRepository(pool)
 );

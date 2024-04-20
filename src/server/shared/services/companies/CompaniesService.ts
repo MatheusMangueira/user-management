@@ -2,6 +2,9 @@ import { CompaniesDTO } from '../../../DTOs/companies/CompaniesDTO';
 import { CompaniesModel } from '../../../model/companies/CompaniesModel';
 import { ICompaniesRepository } from '../../repository/types/IComponiesRepository';
 
+import { hash } from 'bcryptjs';
+
+
 
 export class CompaniesService {
 
@@ -17,10 +20,16 @@ export class CompaniesService {
         throw new Error('email in Company already exists');
       }
 
+      const passwordHash = await hash(companiesDto.password, 8);
+
+
       const newCompany = new CompaniesModel(
         companiesDto.name,
         companiesDto.email,
-        new Date());
+        passwordHash,
+        new Date(),
+        companiesDto.role
+      );
 
       const createdCompany = await this.companiesRepository.create(newCompany);
 

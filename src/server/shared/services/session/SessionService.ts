@@ -1,5 +1,5 @@
 import { compare } from 'bcryptjs';
-import { UserRepository } from '../../repository';
+import { CompaniesRepository, UserRepository } from '../../repository';
 import { sign } from 'jsonwebtoken';
 
 type UserRequest = {
@@ -8,27 +8,46 @@ type UserRequest = {
 };
 
 export class SessionService {
-  constructor(private userRepository: UserRepository) { }
+  constructor(
+    private userRepository: UserRepository,
+    private companiesRepository: CompaniesRepository
+  ) { }
 
   async execute({ email, password }: UserRequest) {
-
+    // Verifica se o usuário existe no repositório de usuários
     const user = await this.userRepository.findByEmail(email);
 
-    if (!user) {
-      throw new Error('User not found');
+    if (user) {
+      const passwordMatch = await compare(password, user.password);
+
+      if (!passwordMatch) {
+        throw new Error('Incorrect email/password combination');
+      }
+
+      const token = sign({}, process.env.SECRET_JWT as string, {
+        subject: user.id
+      });
+
+      return { token };
     }
 
-    const passwordMatch = await compare(password, user.password);
+    // Verifica se a empresa existe no repositório de empresas
+    const company = await this.companiesRepository.findByEmail(email);
 
-    if (!passwordMatch) {
-      throw new Error('Incorrect email/password combination');
+    if (company) {
+      const passwordMatch = await compare(password, company.password);
+
+      if (!passwordMatch) {
+        throw new Error('Incorrect email/password combination');
+      }
+
+      const token = sign({}, process.env.SECRET_JWT as string, {
+        subject: company.id
+      });
+
+      return { token };
     }
 
-    const token = sign({}, process.env.SECRET_JWT as string, {
-      subject: user.id,
-    });
-
-    return { token };
-
+    throw new Error('User not found');
   }
 }

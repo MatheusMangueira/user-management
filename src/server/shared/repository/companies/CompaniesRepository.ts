@@ -8,9 +8,9 @@ export class CompaniesRepository implements ICompaniesRepository {
 
 
   async create(company: CompaniesModel): Promise<CompaniesModel> {
-    const { createdAt, email, id, name } = company;
-    const query = 'INSERT INTO companies (id, name, email, created_at) VALUES ($1, $2, $3, $4) RETURNING *';
-    const values = [id, name, email, createdAt];
+    const { createdAt, email, id, name, password, role } = company;
+    const query = 'INSERT INTO companies (id, name, email, created_at, password, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+    const values = [id, name, email, createdAt, password, role];
 
     const { rows } = await this.db.query(query, values);
 
